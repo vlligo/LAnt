@@ -1,0 +1,4 @@
+/home/vlligo/CLionProjects/LAnt/cmake-build-debug/CMakeFiles/LAnt.dir
+/home/vlligo/CLionProjects/LAnt/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/vlligo/CLionProjects/LAnt/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/vlligo/CLionProjects/LAnt/cmake-build-debug/CMakeFiles/LAnt_autogen.dir

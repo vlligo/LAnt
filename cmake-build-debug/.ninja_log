@@ -1,0 +1,6 @@
+# ninja log v5
+3	91	1687627570063122474	LAnt_autogen/timestamp	ebc8259bef7fe1e1
+3	91	1687627570063122474	LAnt_autogen/mocs_compilation.cpp	ebc8259bef7fe1e1
+3	91	1687627570063122474	/home/vlligo/CLionProjects/LAnt/cmake-build-debug/LAnt_autogen/timestamp	ebc8259bef7fe1e1
+3	91	1687627570063122474	/home/vlligo/CLionProjects/LAnt/cmake-build-debug/LAnt_autogen/mocs_compilation.cpp	ebc8259bef7fe1e1
+91	114	1687627570086455797	CMakeFiles/LAnt.dir/LAnt_autogen/mocs_compilation.cpp.o	4f93e56783fb6bc8
