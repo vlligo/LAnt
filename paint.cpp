@@ -20,7 +20,7 @@ void Colours::doPainting() {
 void Colours::next(int t) {
     QPainter painter(&pm);
     for (int _ = 0; _ < t; _++) {
-        int it = this->cols[std::make_pair(this->cur_x, this->cur_y)]/* * 2*/;
+        int it = this->cols[std::make_pair(this->cur_x, this->cur_y)];
         QChar c = this->command[it];
         int col = (it + 1) % command.size();
         this->cols[{cur_x, cur_y}] = col;
@@ -60,4 +60,22 @@ void Colours::reset() {
 
 void Colours::quit() {
     this->close();
+}
+
+void Colours::move_screen(int dx, int dy) {
+    this->added_h += dx;
+    this->added_w += dy;
+//    QWidget::move(dx, dy);
+}
+
+void Colours::redraw() {
+    pm.fill();
+    update();
+    QPainter painter(&pm);
+    for (auto i : this->cols) {
+        int col = i.second;
+        int cc = 255 - col * 240 / (this->command.size()/* / 2*/ - 1) - 15;
+        painter.fillRect(this->added_w + i.first.first, this->added_h + i.first.second, this->step, this->step, QColor(cc, cc, cc));
+    }
+    update();
 }

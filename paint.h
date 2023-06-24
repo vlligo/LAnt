@@ -13,6 +13,8 @@ public:
     void next(int t);
     void reset();
     void quit();
+    void move_screen(int dx, int dy);
+    void redraw();
 protected:
     void paintEvent(QPaintEvent *e) override;
 

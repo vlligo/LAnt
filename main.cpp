@@ -185,11 +185,49 @@ int main(int argc, char* argv[]) {
     button_step->setGeometry(500, 0, 200, 50);
     QWidget::connect(button_step, &QPushButton::pressed, c, change_step);
     button_step->show();
+    auto move_field = [&]() {
+        bool ok;
+        QString text = QInputDialog::getText(c, "Picture moving",
+                                             "Write down the length of the vertical movement first and horizontal movement after the space[px]:", QLineEdit::Normal,
+                                             (QString::number(window.step)), &ok);
+        if (ok && !text.isEmpty()) {
+            bool was = false;
+            QString dh, dw;
+            for (auto i : text) {
+                if (i == ' ' && !dh.isEmpty()) {
+                    was = true;
+                    continue;
+                }
+                if (!(('0' <= i && i <= '9') || i == '-')) {
+                    QMessageBox msgBox;
+                    msgBox.setText("Invalid two number(" + text + ")");
+                    msgBox.exec();
+                    return;
+                }
+                if (was) {
+                    dw += i;
+                } else {
+                    dh += i;
+                }
+            }
+            if (dh.isEmpty())
+                dh = "0";
+            if (dw.isEmpty())
+                dw = "0";
+            int int_dh = dh.toInt(), int_dw = dw.toInt();
+            window.move_screen(int_dh, int_dw);
+            window.redraw();
+        }
+    };
+    auto* button_move = new QPushButton("Move the screen", c);
+    button_move->setGeometry(700, 0, 200, 50);
+    QWidget::connect(button_move, &QPushButton::pressed, c, move_field);
+    button_move->show();
     auto clear_field = [&]() {
         window.reset();
     };
     auto* button_clear = new QPushButton("Clear", c);
-    button_clear->setGeometry(700, 0, 100, 50);
+    button_clear->setGeometry(900, 0, 100, 50);
     QWidget::connect(button_clear, &QPushButton::pressed, c, clear_field);
     button_clear->show();
     auto quit_all = [&]() {
@@ -197,7 +235,7 @@ int main(int argc, char* argv[]) {
         c->close();
     };
     auto* button_quit = new QPushButton("Quit", c);
-    button_quit->setGeometry(800, 0, 100, 50);
+    button_quit->setGeometry(1000, 0, 100, 50);
     QWidget::connect(button_quit, &QPushButton::pressed, c, quit_all);
     button_quit->show();
     window.show();
