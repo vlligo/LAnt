@@ -172,8 +172,37 @@ int main(int argc, char* argv[]) {
         int value = text.toInt(&isNum);
         if (ok && !text.isEmpty()) {
             if (isNum) {
-                window.step = value;
-                window.reset();
+                bool ok_;
+                QString text_ = QInputDialog::getText(c, "Center coordinates",
+                                                     "Write down the first(vertical) coordinate of the center and then second(horizontal), separated by space[px]:", QLineEdit::Normal,
+                                                     (QString("10 10")), &ok);
+                if (ok_ && !text_.isEmpty()) {
+                    bool was = false;
+                    QString dh, dw;
+                    for (auto i: text_) {
+                        if (i == ' ' && !dh.isEmpty()) {
+                            was = true;
+                            continue;
+                        }
+                        if (!(('0' <= i && i <= '9') || i == '-')) {
+                            QMessageBox msgBox;
+                            msgBox.setText("Invalid two numbers(" + text + ")");
+                            msgBox.exec();
+                            return;
+                        }
+                        if (was) {
+                            dw += i;
+                        } else {
+                            dh += i;
+                        }
+                    }
+                    if (dh.isEmpty())
+                        dh = "0";
+                    if (dw.isEmpty())
+                        dw = "0";
+                    int int_dh = dh.toInt(), int_dw = dw.toInt();
+                    window.set_new_step(value, std::make_pair(int_dh, int_dw));
+                }
             } else {
                 QMessageBox msgBox;
                 msgBox.setText("Invalid number(" + text + ")");
@@ -188,8 +217,8 @@ int main(int argc, char* argv[]) {
     auto move_field = [&]() {
         bool ok;
         QString text = QInputDialog::getText(c, "Picture moving",
-                                             "Write down the length of the vertical movement first and horizontal movement after the space[px]:", QLineEdit::Normal,
-                                             (QString::number(window.step)), &ok);
+                                             "Write down the length of the vertical movement first and horizontal movement separated by space[px]:", QLineEdit::Normal,
+                                             (QString("10 10")), &ok);
         if (ok && !text.isEmpty()) {
             bool was = false;
             QString dh, dw;
@@ -200,7 +229,7 @@ int main(int argc, char* argv[]) {
                 }
                 if (!(('0' <= i && i <= '9') || i == '-')) {
                     QMessageBox msgBox;
-                    msgBox.setText("Invalid two number(" + text + ")");
+                    msgBox.setText("Invalid two numbers(" + text + ")");
                     msgBox.exec();
                     return;
                 }
@@ -219,7 +248,7 @@ int main(int argc, char* argv[]) {
             window.redraw();
         }
     };
-    auto* button_move = new QPushButton("Move the screen", c);
+    auto* button_move = new QPushButton("Move the field", c);
     button_move->setGeometry(700, 0, 200, 50);
     QWidget::connect(button_move, &QPushButton::pressed, c, move_field);
     button_move->show();

@@ -25,7 +25,7 @@ void Colours::next(int t) {
         int col = (it + 1) % command.size();
         this->cols[{cur_x, cur_y}] = col;
         int cc = 255 - col * 240 / (this->command.size()/* / 2*/ - 1) - 15;
-        painter.fillRect(this->added_w + this->cur_x, this->added_h + this->cur_y, this->step, this->step, QColor(cc, cc, cc));
+        painter.fillRect(this->added_h + this->cur_x * this->step, this->added_w + this->cur_y * this->step, this->step, this->step, QColor(cc, cc, cc));
         if (c == 'L') {
             this->dir--;
         } else if (c == 'R') {
@@ -35,13 +35,13 @@ void Colours::next(int t) {
         }
         this->dir = (this->dir + 4) % 4;
         if (this->dir == 0) {
-            this->cur_y -= this->step;
+            this->cur_y--;
         } else if (this->dir == 2) {
-            this->cur_y += this->step;
+            this->cur_y++;
         } else if (this->dir == 1) {
-            this->cur_x += this->step;
+            this->cur_x++;
         } else {
-            this->cur_x -= this->step;
+            this->cur_x--;
         }
     }
     update();
@@ -63,9 +63,8 @@ void Colours::quit() {
 }
 
 void Colours::move_screen(int dx, int dy) {
-    this->added_h += dx;
-    this->added_w += dy;
-//    QWidget::move(dx, dy);
+    this->added_w += dx;
+    this->added_h += dy;
 }
 
 void Colours::redraw() {
@@ -75,7 +74,14 @@ void Colours::redraw() {
     for (auto i : this->cols) {
         int col = i.second;
         int cc = 255 - col * 240 / (this->command.size()/* / 2*/ - 1) - 15;
-        painter.fillRect(this->added_w + i.first.first, this->added_h + i.first.second, this->step, this->step, QColor(cc, cc, cc));
+        painter.fillRect(this->added_h + i.first.first * this->step, this->added_w + i.first.second * this->step, this->step, this->step, QColor(cc, cc, cc));
     }
     update();
+}
+
+void Colours::set_new_step(int new_step, std::pair<int, int> center) {
+    this->added_h -= (-this->added_h + center.second) / this->step * new_step - center.second + added_h;
+    this->added_w -= (-this->added_w + center.first) / this->step * new_step - center.first + added_w;
+    this->step = new_step;
+    this->redraw();
 }
