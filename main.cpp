@@ -26,25 +26,26 @@ int get_num(const QString& text, int l, int r) {
 
 int main(int argc, char* argv[]) {
     QApplication a(argc, argv);
+    QCoreApplication::setApplicationName("Панель управления");
 
     auto* c = new QWidget(nullptr);
 
     Colours window;
-    window.resize(480, 360);
-    window.setWindowTitle("Ant field");
-
+    window.resize(600, 600);
+    window.setWindowTitle("Поле муравья");
+    window.set_new_step(10, std::make_pair(300, 300));
     auto* label_command = new QLabel(c);
-    QString command = "R 1; L 1;";
-    window.command = "RL";
-    QString pref = "Current command is: ";
+    QString command = "L 1; R 1;";
+    window.command = "LR";
+    QString pref = "Текущая команда: ";
     label_command->setText(pref + command);
     label_command->setAlignment(Qt::AlignBottom | Qt::AlignRight);
     label_command->setGeometry(10, 60, label_command->text().size() * 8, 40);
     int one_char_len = 9;
     auto read_command = [&]() {
         bool ok;
-        QString text = QInputDialog::getText(c, "Langton ant command line",
-                                             "Command to the ant:", QLineEdit::Normal,
+        QString text = QInputDialog::getText(c, "Новая команда",
+                                             "Новая команда:", QLineEdit::Normal,
                                              command, &ok);
         if (ok && !text.isEmpty()) {
             QString tot_text = pref + text;
@@ -56,7 +57,7 @@ int main(int argc, char* argv[]) {
                 QChar i = text[j];
                 if (i == ' ') {
                     if (st != -1 && isdigit(text.at(st).toLatin1())) {
-                        tot_text = "Invalid input.\n" + pref + command;
+                        tot_text = "Некорректный ввод.\n" + pref + command;
                         label_command->resize(
                                 (tot_text.size() - 14) * one_char_len,
                                 label_command->height());
@@ -68,7 +69,7 @@ int main(int argc, char* argv[]) {
                 }
                 if (i == 'L' || i == 'R' || i == 'F' || i == 'B') {
                     if (st != -1) {
-                        tot_text = "Invalid input.\n" + pref + command;
+                        tot_text = "Некорректный ввод.\n" + pref + command;
                         label_command->resize(
                                 (tot_text.size() - 14) * one_char_len,
                                 label_command->height());
@@ -83,7 +84,7 @@ int main(int argc, char* argv[]) {
                     st = j;
                 if (i == ';') {
                     if (st == -1) {
-                        tot_text = "Invalid input.\n" + pref + command;
+                        tot_text = "Некорректный ввод.\n" + pref + command;
                         label_command->resize(
                                 (tot_text.size() - 14) * one_char_len,
                                 label_command->height());
@@ -100,10 +101,11 @@ int main(int argc, char* argv[]) {
                 }
             }
             if (st != -1) {
-                tot_text = "Invalid input.\n" + pref + command;
+                tot_text = "Некорректный ввод.\n" + pref + command;
                 label_command->resize(
                         (tot_text.size() - 14) * one_char_len,
                         label_command->height());
+
                 label_command->setText(tot_text);
                 c->resize(std::max(c->width(), label_command->width() + 10), c->height());
                 return;
@@ -115,9 +117,10 @@ int main(int argc, char* argv[]) {
             c->resize(std::max(c->width(), label_command->width() + 10), c->height());
             window.reset();
             window.command = long_c;
+            window.set_new_step(10, std::make_pair(300, 300));
         }
     };
-    auto* button_read_new_command = new QPushButton("New command", c);
+    auto* button_read_new_command = new QPushButton("Новая команда", c);
     button_read_new_command->resize(200, 50);
     QWidget::connect(button_read_new_command, &QPushButton::pressed, c, read_command);
     button_read_new_command->show();
@@ -128,7 +131,7 @@ int main(int argc, char* argv[]) {
     auto next_turn = [&]() {
         window.next(1);
     };
-    auto* button_next = new QPushButton("Next", c);
+    auto* button_next = new QPushButton("Сделать шаг", c);
     button_next->setGeometry(200, 0, 100, 50);
     QWidget::connect(button_next, &QPushButton::pressed, c, next_turn);
     button_next->show();
@@ -136,46 +139,52 @@ int main(int argc, char* argv[]) {
     auto next_last_custom_turns = [&]() {
         window.next(last_custom_number.toInt());
     };
-    auto* button_next_last_custom = new QPushButton("Next " + last_custom_number, c);
-    button_next_last_custom->setGeometry(300, 0, 100, 50);
+    auto* button_next_last_custom = new QPushButton("Сделать " + last_custom_number + " шагов", c);
+    button_next_last_custom->setGeometry(300, 0, 200, 50);
     QWidget::connect(button_next_last_custom, &QPushButton::pressed, c, next_last_custom_turns);
     button_next_last_custom->show();
     auto next_custom_turns = [&]() {
         bool ok;
-        QString text = QInputDialog::getText(c, "Custom number of turns",
-                                             "Number of turns:", QLineEdit::Normal,
+        QString text = QInputDialog::getText(c, "Новое количество шагов",
+                                             "Количество шагов:", QLineEdit::Normal,
                                              last_custom_number, &ok);
         bool isNum;
         int value = text.toInt(&isNum);
         if (ok && !text.isEmpty()) {
             if (isNum) {
                 last_custom_number = text;
-                button_next_last_custom->setText("Next " + last_custom_number);
+                int lcn = last_custom_number.toInt() % 100;
+                if ((5 <= lcn && lcn <= 20) || lcn % 10 == 0 || (lcn % 10 > 4 && lcn % 10 <= 9))
+                button_next_last_custom->setText("Сделать " + last_custom_number + " шагов");
+                else if (lcn % 10 == 1)
+                    button_next_last_custom->setText("Сделать " + last_custom_number + " шаг");
+                else
+                    button_next_last_custom->setText("Сделать " + last_custom_number + " шагa");
                 window.next(value);
             } else {
                 QMessageBox msgBox;
-                msgBox.setText("Invalid number(" + text + ")");
+                msgBox.setText("Некорректное число(" + text + ")");
                 msgBox.exec();
             }
         }
     };
-    auto* button_next_custom = new QPushButton("Next custom", c);
-    button_next_custom->setGeometry(400, 0, 100, 50);
+    auto* button_next_custom = new QPushButton("Новое количество шагов", c);
+    button_next_custom->setGeometry(500, 0, 200, 50);
     QWidget::connect(button_next_custom, &QPushButton::pressed, c, next_custom_turns);
     // Clearing the field and quiting of all windows buttons
     auto change_step = [&]() {
         bool ok;
-        QString text = QInputDialog::getText(c, "The size of square",
-                                             "The size[px]:", QLineEdit::Normal,
+        QString text = QInputDialog::getText(c, "Размер квадрата",
+                                             "Размер[пк]:", QLineEdit::Normal,
                                              (QString::number(window.step)), &ok);
         bool isNum;
         int value = text.toInt(&isNum);
         if (ok && !text.isEmpty()) {
             if (isNum) {
                 bool ok_;
-                QString text_ = QInputDialog::getText(c, "Center coordinates",
-                                                     "Write down the first(vertical) coordinate of the center and then second(horizontal), separated by space[px]:", QLineEdit::Normal,
-                                                     (QString("10 10")), &ok);
+                QString text_ = QInputDialog::getText(c, "Центр гомотетии",
+                                                      "Напишите координату по вертикали, и через пробел горизонтальную координату[пк]:", QLineEdit::Normal,
+                                                      (QString("300 300")), &ok_);
                 if (ok_ && !text_.isEmpty()) {
                     bool was = false;
                     QString dh, dw;
@@ -186,7 +195,7 @@ int main(int argc, char* argv[]) {
                         }
                         if (!(('0' <= i && i <= '9') || i == '-')) {
                             QMessageBox msgBox;
-                            msgBox.setText("Invalid two numbers(" + text + ")");
+                            msgBox.setText("Некорректные два чила(" + text + ")");
                             msgBox.exec();
                             return;
                         }
@@ -205,19 +214,19 @@ int main(int argc, char* argv[]) {
                 }
             } else {
                 QMessageBox msgBox;
-                msgBox.setText("Invalid number(" + text + ")");
+                msgBox.setText("Некорректное число(" + text + ")");
                 msgBox.exec();
             }
         }
     };
-    auto* button_step = new QPushButton("Change the size of square", c);
-    button_step->setGeometry(500, 0, 200, 50);
+    auto* button_step = new QPushButton("Новый размер квадрата", c);
+    button_step->setGeometry(700, 0, 200, 50);
     QWidget::connect(button_step, &QPushButton::pressed, c, change_step);
     button_step->show();
     auto move_field = [&]() {
         bool ok;
-        QString text = QInputDialog::getText(c, "Picture moving",
-                                             "Write down the length of the vertical movement first and horizontal movement separated by space[px]:", QLineEdit::Normal,
+        QString text = QInputDialog::getText(c, "Сдвинуть поле",
+                                             "Напишите длину вертикального перемещения, и через пробел длину горизонтального перемещения[пк]:", QLineEdit::Normal,
                                              (QString("10 10")), &ok);
         if (ok && !text.isEmpty()) {
             bool was = false;
@@ -229,7 +238,7 @@ int main(int argc, char* argv[]) {
                 }
                 if (!(('0' <= i && i <= '9') || i == '-')) {
                     QMessageBox msgBox;
-                    msgBox.setText("Invalid two numbers(" + text + ")");
+                    msgBox.setText("Некорректные два числа(" + text + ")");
                     msgBox.exec();
                     return;
                 }
@@ -248,23 +257,23 @@ int main(int argc, char* argv[]) {
             window.redraw();
         }
     };
-    auto* button_move = new QPushButton("Move the field", c);
-    button_move->setGeometry(700, 0, 200, 50);
+    auto* button_move = new QPushButton("Сдинуть поле", c);
+    button_move->setGeometry(900, 0, 200, 50);
     QWidget::connect(button_move, &QPushButton::pressed, c, move_field);
     button_move->show();
     auto clear_field = [&]() {
         window.reset();
     };
-    auto* button_clear = new QPushButton("Clear", c);
-    button_clear->setGeometry(900, 0, 100, 50);
+    auto* button_clear = new QPushButton("Очистить", c);
+    button_clear->setGeometry(1100, 0, 100, 50);
     QWidget::connect(button_clear, &QPushButton::pressed, c, clear_field);
     button_clear->show();
     auto quit_all = [&]() {
         window.quit();
         c->close();
     };
-    auto* button_quit = new QPushButton("Quit", c);
-    button_quit->setGeometry(1000, 0, 100, 50);
+    auto* button_quit = new QPushButton("Выход", c);
+    button_quit->setGeometry(1200, 0, 100, 50);
     QWidget::connect(button_quit, &QPushButton::pressed, c, quit_all);
     button_quit->show();
     window.show();
