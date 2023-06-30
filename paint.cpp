@@ -55,6 +55,9 @@ void Colours::reset() {
     this->added_w = 0;
     this->cols = {};
     pm.fill();
+    int old_step = this->step;
+    this->step = 1;
+    this->set_new_step(old_step, std::make_pair(300, 300));
     update();
 }
 
