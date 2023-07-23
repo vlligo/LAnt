@@ -375,6 +375,11 @@ CMakeFiles/LAnt.dir/main.cpp.o: /home/vlligo/CLionProjects/LAnt/main.cpp \
   /usr/include/qt/QtWidgets/qmessagebox.h \
   /usr/include/qt/QtGui/QPainter \
   /usr/include/qt/QtGui/qpainter.h \
+  /usr/include/qt/QtCore/QTimer \
+  /usr/include/qt/QtCore/qtimer.h \
+  /usr/include/qt/QtCore/qbasictimer.h \
+  /usr/include/qt/QtCore/QEventLoop \
+  /usr/include/qt/QtCore/qeventloop.h \
   /home/vlligo/CLionProjects/LAnt/paint.h
 
 CMakeFiles/LAnt.dir/paint.cpp.o: /home/vlligo/CLionProjects/LAnt/paint.cpp \
@@ -716,6 +721,14 @@ CMakeFiles/LAnt.dir/paint.cpp.o: /home/vlligo/CLionProjects/LAnt/paint.cpp \
 /home/vlligo/CLionProjects/LAnt/paint.cpp:
 
 /home/vlligo/CLionProjects/LAnt/paint.h:
+
+/usr/include/qt/QtCore/QEventLoop:
+
+/usr/include/qt/QtCore/qbasictimer.h:
+
+/usr/include/qt/QtCore/qtimer.h:
+
+/usr/include/qt/QtCore/QTimer:
 
 /usr/include/qt/QtGui/qpainter.h:
 

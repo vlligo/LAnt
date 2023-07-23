@@ -2,7 +2,7 @@
 
 #include <QWidget>
 #include <QPainter>
-#include <unordered_map>
+#include <map>
 
 class Colours : public QWidget {
 
@@ -16,6 +16,7 @@ public:
     void redraw();
     void set_new_step(int new_step, std::pair<int, int> center);
     int step = 1;
+
 protected:
     void paintEvent(QPaintEvent *e) override;
 

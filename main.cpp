@@ -1,14 +1,12 @@
 #include <QApplication>
-#include <QLocale>
 #include <QTranslator>
 #include <QLabel>
 #include <QRectF>
 #include <QWidget>
 #include <QInputDialog>
-#include <QDir>
 #include <QPushButton>
 #include <QMessageBox>
-#include <QPainter>
+#include <QTimer>
 #include "paint.h"
 
 bool isdigit(char ch) {
@@ -195,7 +193,7 @@ int main(int argc, char* argv[]) {
                         }
                         if (!(('0' <= i && i <= '9') || i == '-')) {
                             QMessageBox msgBox;
-                            msgBox.setText("Некорректные два чила(" + text + ")");
+                            msgBox.setText("Некорректные два числа(" + text + ")");
                             msgBox.exec();
                             return;
                         }
@@ -257,15 +255,31 @@ int main(int argc, char* argv[]) {
             window.redraw();
         }
     };
-    auto* button_move = new QPushButton("Сдинуть поле", c);
+    auto* button_move = new QPushButton("Сдвинуть поле", c);
     button_move->setGeometry(900, 0, 200, 50);
     QWidget::connect(button_move, &QPushButton::pressed, c, move_field);
     button_move->show();
     auto clear_field = [&]() {
         window.reset();
     };
+
+    auto measure = [&]() {
+        QMessageBox msgBox1;
+        msgBox1.setText("У Вас секунда для наводки мышкой на нужную точку");
+        msgBox1.setStandardButtons(QMessageBox::NoButton);
+        QTimer::singleShot(1000, &msgBox1, &QMessageBox::accept);
+        msgBox1.exec();
+        QMessageBox msgBox;
+        msgBox.setText("Координаты мыши на поле: " + QString::number(window.cursor().pos().x() - window.x()) + "; " + QString::number(window.cursor().pos().y() - window.y()) + "");
+        msgBox.exec();
+    };
+    auto* button_measure = new QPushButton("Координаты мыши", c);
+    button_measure->setGeometry(1100, 0, 200, 50);
+    QWidget::connect(button_measure, &QPushButton::pressed, c, measure);
+    button_measure->show();
+
     auto* button_clear = new QPushButton("Очистить", c);
-    button_clear->setGeometry(1100, 0, 100, 50);
+    button_clear->setGeometry(1300, 0, 100, 50);
     QWidget::connect(button_clear, &QPushButton::pressed, c, clear_field);
     button_clear->show();
     auto quit_all = [&]() {
@@ -273,7 +287,7 @@ int main(int argc, char* argv[]) {
         c->close();
     };
     auto* button_quit = new QPushButton("Выход", c);
-    button_quit->setGeometry(1200, 0, 100, 50);
+    button_quit->setGeometry(1400, 0, 100, 50);
     QWidget::connect(button_quit, &QPushButton::pressed, c, quit_all);
     button_quit->show();
     window.show();
