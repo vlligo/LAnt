@@ -124,9 +124,9 @@ LAnt: CMakeFiles/LAnt.dir/LAnt_autogen/mocs_compilation.cpp.o
 LAnt: CMakeFiles/LAnt.dir/main.cpp.o
 LAnt: CMakeFiles/LAnt.dir/paint.cpp.o
 LAnt: CMakeFiles/LAnt.dir/build.make
-LAnt: /usr/lib/libQt5Widgets.so.5.15.9
-LAnt: /usr/lib/libQt5Gui.so.5.15.9
-LAnt: /usr/lib/libQt5Core.so.5.15.9
+LAnt: /usr/lib/libQt5Widgets.so.5.15.10
+LAnt: /usr/lib/libQt5Gui.so.5.15.10
+LAnt: /usr/lib/libQt5Core.so.5.15.10
 LAnt: CMakeFiles/LAnt.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/vlligo/CLionProjects/LAnt/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable LAnt"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/LAnt.dir/link.txt --verbose=$(VERBOSE)

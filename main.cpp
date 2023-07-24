@@ -37,9 +37,9 @@ int main(int argc, char* argv[]) {
     window.command = "LR";
     QString pref = "Текущая команда: ";
     label_command->setText(pref + command);
-    label_command->setAlignment(Qt::AlignBottom | Qt::AlignRight);
-    label_command->setGeometry(10, 60, label_command->text().size() * 8, 40);
-    int one_char_len = 9;
+    label_command->setAlignment(Qt::AlignHCenter | Qt::AlignLeft);
+    int one_char_len = 7;
+    label_command->setGeometry(0, 50, 600, 50);
     auto read_command = [&]() {
         bool ok;
         QString text = QInputDialog::getText(c, "Новая команда",
@@ -56,11 +56,11 @@ int main(int argc, char* argv[]) {
                 if (i == ' ') {
                     if (st != -1 && isdigit(text.at(st).toLatin1())) {
                         tot_text = "Некорректный ввод.\n" + pref + command;
-                        label_command->resize(
-                                (tot_text.size() - 14) * one_char_len,
+                        label_command->resize(std::max(600,
+                                tot_text.size() * one_char_len),
                                 label_command->height());
                         label_command->setText(tot_text);
-                        c->resize(std::max(c->width(), label_command->width() + 10), c->height());
+                        c->resize(std::max(c->width(), label_command->width()), c->height());
                         return;
                     }
                     continue;
@@ -68,11 +68,11 @@ int main(int argc, char* argv[]) {
                 if (i == 'L' || i == 'R' || i == 'F' || i == 'B') {
                     if (st != -1) {
                         tot_text = "Некорректный ввод.\n" + pref + command;
-                        label_command->resize(
-                                (tot_text.size() - 14) * one_char_len,
-                                label_command->height());
+                        label_command->resize(std::max(600,
+                                                       tot_text.size() * one_char_len),
+                                              label_command->height());
                         label_command->setText(tot_text);
-                        c->resize(std::max(c->width(), label_command->width() + 10), c->height());
+                        c->resize(std::max(c->width(), label_command->width()), c->height());
                         return;
                     }
                     curr_command = i;
@@ -83,11 +83,11 @@ int main(int argc, char* argv[]) {
                 if (i == ';') {
                     if (st == -1) {
                         tot_text = "Некорректный ввод.\n" + pref + command;
-                        label_command->resize(
-                                (tot_text.size() - 14) * one_char_len,
-                                label_command->height());
+                        label_command->resize(std::max(600,
+                                                       tot_text.size() * one_char_len),
+                                              label_command->height());
                         label_command->setText(tot_text);
-                        c->resize(std::max(c->width(), label_command->width() + 10), c->height());
+                        c->resize(std::max(c->width(), label_command->width()), c->height());
                         return;
                     } else {
                         int count = get_num(text, st, j);
@@ -100,26 +100,26 @@ int main(int argc, char* argv[]) {
             }
             if (st != -1) {
                 tot_text = "Некорректный ввод.\n" + pref + command;
-                label_command->resize(
-                        (tot_text.size() - 14) * one_char_len,
-                        label_command->height());
+                label_command->resize(std::max(600,
+                                               tot_text.size() * one_char_len),
+                                      label_command->height());
 
                 label_command->setText(tot_text);
-                c->resize(std::max(c->width(), label_command->width() + 10), c->height());
+                c->resize(std::max(c->width(), label_command->width()), c->height());
                 return;
             }
             // submit  a command
             command = text;
             label_command->setText(tot_text);
-            label_command->resize(tot_text.size() * one_char_len, label_command->height());
-            c->resize(std::max(c->width(), label_command->width() + 10), c->height());
+            label_command->resize(std::max(600, tot_text.size() * one_char_len), label_command->height());
+            c->resize(std::max(c->width(), label_command->width()), c->height());
             window.reset();
             window.command = long_c;
             window.set_new_step(10, std::make_pair(300, 300));
         }
     };
     auto* button_read_new_command = new QPushButton("Новая команда", c);
-    button_read_new_command->resize(200, 50);
+    button_read_new_command->resize(600, 50);
     QWidget::connect(button_read_new_command, &QPushButton::pressed, c, read_command);
     button_read_new_command->show();
     label_command->show();
@@ -130,7 +130,7 @@ int main(int argc, char* argv[]) {
         window.next(1);
     };
     auto* button_next = new QPushButton("Сделать шаг", c);
-    button_next->setGeometry(200, 0, 100, 50);
+    button_next->setGeometry(0, 100, 200, 50);
     QWidget::connect(button_next, &QPushButton::pressed, c, next_turn);
     button_next->show();
     QString last_custom_number = "1000000";
@@ -138,7 +138,7 @@ int main(int argc, char* argv[]) {
         window.next(last_custom_number.toInt());
     };
     auto* button_next_last_custom = new QPushButton("Сделать " + last_custom_number + " шагов", c);
-    button_next_last_custom->setGeometry(300, 0, 200, 50);
+    button_next_last_custom->setGeometry(200, 100, 200, 50);
     QWidget::connect(button_next_last_custom, &QPushButton::pressed, c, next_last_custom_turns);
     button_next_last_custom->show();
     auto next_custom_turns = [&]() {
@@ -167,7 +167,7 @@ int main(int argc, char* argv[]) {
         }
     };
     auto* button_next_custom = new QPushButton("Новое количество шагов", c);
-    button_next_custom->setGeometry(500, 0, 200, 50);
+    button_next_custom->setGeometry(400, 100, 200, 50);
     QWidget::connect(button_next_custom, &QPushButton::pressed, c, next_custom_turns);
     // Clearing the field and quiting of all windows buttons
     auto change_step = [&]() {
@@ -218,7 +218,7 @@ int main(int argc, char* argv[]) {
         }
     };
     auto* button_step = new QPushButton("Новый размер квадрата", c);
-    button_step->setGeometry(700, 0, 200, 50);
+    button_step->setGeometry(0, 150, 200, 50);
     QWidget::connect(button_step, &QPushButton::pressed, c, change_step);
     button_step->show();
     auto move_field = [&]() {
@@ -256,7 +256,7 @@ int main(int argc, char* argv[]) {
         }
     };
     auto* button_move = new QPushButton("Сдвинуть поле", c);
-    button_move->setGeometry(900, 0, 200, 50);
+    button_move->setGeometry(200, 150, 200, 50);
     QWidget::connect(button_move, &QPushButton::pressed, c, move_field);
     button_move->show();
     auto clear_field = [&]() {
@@ -265,21 +265,21 @@ int main(int argc, char* argv[]) {
 
     auto measure = [&]() {
         QMessageBox msgBox1;
-        msgBox1.setText("У Вас секунда для наводки мышкой на нужную точку");
+        msgBox1.setText("У Вас две секунды для наводки мышкой на нужную точку");
         msgBox1.setStandardButtons(QMessageBox::NoButton);
-        QTimer::singleShot(1000, &msgBox1, &QMessageBox::accept);
+        QTimer::singleShot(2000, &msgBox1, &QMessageBox::accept);
         msgBox1.exec();
         QMessageBox msgBox;
         msgBox.setText("Координаты мыши на поле: " + QString::number(window.cursor().pos().x() - window.x()) + "; " + QString::number(window.cursor().pos().y() - window.y()) + "");
         msgBox.exec();
     };
     auto* button_measure = new QPushButton("Координаты мыши", c);
-    button_measure->setGeometry(1100, 0, 200, 50);
+    button_measure->setGeometry(400, 150, 200, 50);
     QWidget::connect(button_measure, &QPushButton::pressed, c, measure);
     button_measure->show();
 
     auto* button_clear = new QPushButton("Очистить", c);
-    button_clear->setGeometry(1300, 0, 100, 50);
+    button_clear->setGeometry(400, 200, 100, 50);
     QWidget::connect(button_clear, &QPushButton::pressed, c, clear_field);
     button_clear->show();
     auto quit_all = [&]() {
@@ -287,7 +287,7 @@ int main(int argc, char* argv[]) {
         c->close();
     };
     auto* button_quit = new QPushButton("Выход", c);
-    button_quit->setGeometry(1400, 0, 100, 50);
+    button_quit->setGeometry(500, 200, 100, 50);
     QWidget::connect(button_quit, &QPushButton::pressed, c, quit_all);
     button_quit->show();
     window.show();

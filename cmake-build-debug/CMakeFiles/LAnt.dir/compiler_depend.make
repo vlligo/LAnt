@@ -308,8 +308,6 @@ CMakeFiles/LAnt.dir/main.cpp.o: /home/vlligo/CLionProjects/LAnt/main.cpp \
   /usr/include/qt/QtCore/qhash.h \
   /usr/include/c++/13.1.1/variant \
   /usr/include/qt/QtCore/qshareddata.h \
-  /usr/include/qt/QtCore/QLocale \
-  /usr/include/qt/QtCore/qlocale.h \
   /usr/include/qt/QtCore/QTranslator \
   /usr/include/qt/QtCore/qtranslator.h \
   /usr/include/qt/QtWidgets/QLabel \
@@ -362,25 +360,18 @@ CMakeFiles/LAnt.dir/main.cpp.o: /home/vlligo/CLionProjects/LAnt/main.cpp \
   /usr/include/qt/QtGui/qpen.h \
   /usr/include/qt/QtGui/qtextoption.h \
   /usr/include/qt/QtWidgets/qdialog.h \
-  /usr/include/qt/QtCore/QDir \
-  /usr/include/qt/QtCore/qdir.h \
-  /usr/include/qt/QtCore/qfileinfo.h \
-  /usr/include/qt/QtCore/qfile.h \
-  /usr/include/qt/QtCore/qfiledevice.h \
   /usr/include/qt/QtWidgets/QPushButton \
   /usr/include/qt/QtWidgets/qpushbutton.h \
   /usr/include/qt/QtWidgets/qabstractbutton.h \
   /usr/include/qt/QtGui/qicon.h \
   /usr/include/qt/QtWidgets/QMessageBox \
   /usr/include/qt/QtWidgets/qmessagebox.h \
-  /usr/include/qt/QtGui/QPainter \
-  /usr/include/qt/QtGui/qpainter.h \
   /usr/include/qt/QtCore/QTimer \
   /usr/include/qt/QtCore/qtimer.h \
   /usr/include/qt/QtCore/qbasictimer.h \
-  /usr/include/qt/QtCore/QEventLoop \
-  /usr/include/qt/QtCore/qeventloop.h \
-  /home/vlligo/CLionProjects/LAnt/paint.h
+  /home/vlligo/CLionProjects/LAnt/paint.h \
+  /usr/include/qt/QtGui/QPainter \
+  /usr/include/qt/QtGui/qpainter.h
 
 CMakeFiles/LAnt.dir/paint.cpp.o: /home/vlligo/CLionProjects/LAnt/paint.cpp \
   /usr/include/stdc-predef.h \
@@ -720,19 +711,17 @@ CMakeFiles/LAnt.dir/paint.cpp.o: /home/vlligo/CLionProjects/LAnt/paint.cpp \
 
 /home/vlligo/CLionProjects/LAnt/paint.cpp:
 
-/home/vlligo/CLionProjects/LAnt/paint.h:
+/usr/include/qt/QtGui/qpainter.h:
 
-/usr/include/qt/QtCore/QEventLoop:
+/usr/include/qt/QtGui/QPainter:
+
+/home/vlligo/CLionProjects/LAnt/paint.h:
 
 /usr/include/qt/QtCore/qbasictimer.h:
 
 /usr/include/qt/QtCore/qtimer.h:
 
 /usr/include/qt/QtCore/QTimer:
-
-/usr/include/qt/QtGui/qpainter.h:
-
-/usr/include/qt/QtGui/QPainter:
 
 /usr/include/qt/QtWidgets/qmessagebox.h:
 
@@ -743,12 +732,6 @@ CMakeFiles/LAnt.dir/paint.cpp.o: /home/vlligo/CLionProjects/LAnt/paint.cpp \
 /usr/include/qt/QtWidgets/qabstractbutton.h:
 
 /usr/include/qt/QtWidgets/QPushButton:
-
-/usr/include/qt/QtCore/qfiledevice.h:
-
-/usr/include/qt/QtCore/qfileinfo.h:
-
-/usr/include/qt/QtCore/qdir.h:
 
 /usr/include/qt/QtWidgets/qdialog.h:
 
@@ -765,8 +748,6 @@ CMakeFiles/LAnt.dir/paint.cpp.o: /home/vlligo/CLionProjects/LAnt/paint.cpp \
 /usr/include/qt/QtWidgets/qsizepolicy.h:
 
 /usr/include/qt/QtGui/qfontinfo.h:
-
-/usr/include/qt/QtCore/QDir:
 
 /usr/include/c++/13.1.1/backward/auto_ptr.h:
 
@@ -1013,8 +994,6 @@ CMakeFiles/LAnt.dir/paint.cpp.o: /home/vlligo/CLionProjects/LAnt/paint.cpp \
 /usr/include/bits/types/__sigset_t.h:
 
 /usr/include/c++/13.1.1/bit:
-
-/usr/include/qt/QtCore/QLocale:
 
 /usr/include/c++/13.1.1/x86_64-pc-linux-gnu/bits/os_defines.h:
 
@@ -1265,8 +1244,6 @@ LAnt_autogen/mocs_compilation.cpp:
 /usr/include/qt/QtCore/qobjectdefs.h:
 
 /usr/include/qt/QtCore/qdatastream.h:
-
-/usr/include/qt/QtCore/qfile.h:
 
 /usr/include/bits/sched.h:
 
